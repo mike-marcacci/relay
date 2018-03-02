@@ -30,7 +30,8 @@ function recycleNodesInto<T>(prevData: T, nextData: T): T {
   const prevArray = Array.isArray(prevData) ? prevData : null;
   const nextArray = Array.isArray(nextData) ? nextData : null;
   if (prevArray && nextArray) {
-    const isFrozen = Object.isFrozen(nextArray);
+    const isFrozen =
+      process.env.NODE_ENV !== 'production' && Object.isFrozen(nextArray);
     canRecycle =
       nextArray.reduce((wasEqual, nextItem, ii) => {
         const prevValue = prevArray[ii];
@@ -46,7 +47,8 @@ function recycleNodesInto<T>(prevData: T, nextData: T): T {
     const nextObject = nextData;
     const prevKeys = Object.keys(prevObject);
     const nextKeys = Object.keys(nextObject);
-    const isFrozen = Object.isFrozen(nextObject);
+    const isFrozen =
+      process.env.NODE_ENV !== 'production' && Object.isFrozen(nextObject);
     canRecycle =
       nextKeys.reduce((wasEqual, key) => {
         const prevValue = prevObject[key];
